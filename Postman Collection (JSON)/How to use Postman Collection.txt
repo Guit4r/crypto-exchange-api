@@ -1,0 +1,5 @@
+วิธีใช้ใน Postman:
+
+1. เปิด Postman
+2. ไปที่เมนู “Import” → “File” → เลือกไฟล์ Crypto Exchange API.postman_collection
+3. จากจะเห็น Collection ชื่อ "Crypto Exchange API"
