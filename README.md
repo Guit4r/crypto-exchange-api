@@ -25,7 +25,7 @@ Built with **Node.js**, **Express**, and **Prisma ORM**, the system includes mod
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/your-username/crypto-exchange-api.git
+git clone https://github.com/Guit4r/crypto-exchange-api.git
 cd crypto-exchange-api
 ```
 
