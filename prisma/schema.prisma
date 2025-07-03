@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  wallets   Wallet[]
+  orders    Order[]
+  tradesAsBuyer  Trade[] @relation("Buyer")
+  tradesAsSeller Trade[] @relation("Seller")
+  transactions   Transaction[]
+}
+
+model Wallet {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  currency  String
+  balance   Float    @default(0)
+}
+
+model Order {
+  id            String   @id @default(uuid())
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+  orderType     String   // BUY or SELL
+  cryptoCurrency String
+  fiatCurrency   String
+  price         Float
+  amount        Float
+  status        String   // OPEN, COMPLETED, CANCELLED
+  createdAt     DateTime @default(now())
+  trades        Trade[]
+}
+
+model Trade {
+  id          String   @id @default(uuid())
+  order       Order    @relation(fields: [orderId], references: [id])
+  orderId     String
+  buyer       User     @relation("Buyer", fields: [buyerId], references: [id])
+  buyerId     String
+  seller      User     @relation("Seller", fields: [sellerId], references: [id])
+  sellerId    String
+  cryptoAmount Float
+  fiatAmount   Float
+  tradeAt      DateTime @default(now())
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  type        String   // DEPOSIT, WITHDRAW, TRANSFER, TRADE
+  amount      Float
+  currency    String
+  toUserId    String?  // สำหรับ transfer
+  referenceId String?  // เช่นอ้างอิง order หรือ trade
+  description String? // อาจจะใช้สำหรับบันทึกข้อมูลเพิ่มเติม
+  createdAt   DateTime @default(now())
+}
